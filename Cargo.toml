@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+    "weather-lib",
+    "weather-dev",
+    "weather-server",
+    "weather-sync",
+]
