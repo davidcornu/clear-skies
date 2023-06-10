@@ -56,7 +56,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
             .openapi("weather-server", "1.0.0")
             .json()
             .map_err(|e| eyre!("failed to generate openapi spec: {e:?}"))?,
-        sync_client: SyncClient::new(),
+        sync_client: SyncClient::new(Default::default()),
     });
 
     let server_config = ConfigDropshot {
@@ -253,6 +253,5 @@ async fn weather(
             HttpError::for_internal_error(format!("error while fetching report: {e:#?}"))
         })?;
 
-    dbg!(location);
     Ok(HttpResponseOk(report))
 }
