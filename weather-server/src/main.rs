@@ -14,7 +14,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use weather_lib::{
     locations::{location_index, ProvinceOrTerritory},
-    weather_report::{CanadaTz, Report},
+    weather_report::{CanadaTz, WeatherReport},
 };
 use weather_sync::Client as SyncClient;
 
@@ -234,7 +234,7 @@ struct WeatherPath {
 async fn weather(
     rqctx: RequestContext<Arc<State>>,
     path: Path<WeatherPath>,
-) -> Result<HttpResponseOk<Arc<Report>>, HttpError> {
+) -> Result<HttpResponseOk<Arc<WeatherReport>>, HttpError> {
     let WeatherPath {
         province_or_territory,
         slug,

@@ -7,7 +7,8 @@ use moka::future::Cache;
 use reqwest::{Client as ReqwestClient, Method, Request, StatusCode, Url};
 use tokio::sync::Semaphore;
 use weather_lib::{
-    environment_canada::weather_feed::WeatherFeed, locations::Location, weather_report::Report,
+    environment_canada::weather_feed::WeatherFeed, locations::Location,
+    weather_report::WeatherReport,
 };
 
 pub struct Client {
@@ -63,7 +64,7 @@ impl Client {
     }
 
     // TODO - needs a locking mechanism to prevent multiple requests for the same location
-    pub async fn fetch_report(&self, location: &Location) -> Result<Arc<Report>> {
+    pub async fn fetch_report(&self, location: &Location) -> Result<Arc<WeatherReport>> {
         let feed_url = location.feed_url.parse::<Url>()?;
         let cache_key = feed_url.to_string();
         let time_before_request = SystemTime::now();
@@ -135,7 +136,7 @@ impl Client {
 
         let body = response.text().await?;
         let feed = WeatherFeed::from_xml_str(&body)?;
-        let report = Arc::new(Report::from_weather_feed(feed, location.tz)?);
+        let report = Arc::new(WeatherReport::from_weather_feed(feed, location.tz)?);
 
         self.cache
             .insert(
@@ -154,7 +155,7 @@ impl Client {
 #[derive(Clone)]
 struct CacheEntry {
     cache_policy: Arc<CachePolicy>,
-    report: Arc<Report>,
+    report: Arc<WeatherReport>,
 }
 
 fn request_from_parts(parts: Parts) -> Request {

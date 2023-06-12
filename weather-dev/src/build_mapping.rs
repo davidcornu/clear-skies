@@ -14,7 +14,7 @@ use slugs::register_slug;
 use weather_lib::{
     environment_canada::weather_feed::WeatherFeed,
     locations::{OwnedLocation, ProvinceOrTerritory},
-    weather_report::{CanadaTz, Report},
+    weather_report::{CanadaTz, WeatherReport},
 };
 
 mod slugs {
@@ -286,7 +286,7 @@ fn handle_file(path: &Path) -> Result<OwnedLocation> {
 
     // Note that dates in this report with be invalid as using Canada/Eastern
     // as a placeholder. This is fine as we aren't actually using the forecasts.
-    let report = Report::from_weather_feed(feed, CanadaTz::Eastern)?;
+    let report = WeatherReport::from_weather_feed(feed, CanadaTz::Eastern)?;
 
     let tz = match report.detected_timezone() {
         Some(tz) => tz,

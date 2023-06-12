@@ -14,7 +14,7 @@ use forecasts::{Builder, Day};
 use special_weather_statements::SpecialWeatherStatement;
 
 #[derive(Debug, Serialize, JsonSchema)]
-pub struct Report {
+pub struct WeatherReport {
     pub title: String,
     pub updated: DateTime<Utc>,
     pub url: String,
@@ -23,8 +23,8 @@ pub struct Report {
     pub weather_forecasts: Vec<Day>,
 }
 
-impl Report {
-    pub fn from_weather_feed(feed: WeatherFeed, tz: CanadaTz) -> Result<Report> {
+impl WeatherReport {
+    pub fn from_weather_feed(feed: WeatherFeed, tz: CanadaTz) -> Result<WeatherReport> {
         let mut current_conditions = None;
         let mut special_weather_statements = Vec::new();
         let mut forecasts_builder = Builder::new(feed.updated, &tz.chrono());
@@ -61,7 +61,7 @@ impl Report {
             .find_map(|l| (l.rel.as_deref() == Some("related")).then(|| l.href.clone()))
             .ok_or_else(|| eyre!("missing alternate link"))?;
 
-        Ok(Report {
+        Ok(WeatherReport {
             title: feed.title,
             updated: feed.updated,
             url,
