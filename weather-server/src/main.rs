@@ -13,7 +13,7 @@ use indoc::indoc;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use weather_lib::{
-    locations::{location_index, ProvinceOrTerritory},
+    locations::{location_index, Coordinates, ProvinceOrTerritory},
     weather_report::{CanadaTz, WeatherReport},
 };
 use weather_sync::Client as SyncClient;
@@ -156,12 +156,14 @@ struct Location {
     province_or_territory: &'static str,
     /// The location's local timezone
     tz: CanadaTz,
-    /// THe path to retrieve the weather for this location
+    /// The path to retrieve the weather for this location
     path: String,
     /// The URL for the Environment Canada RSS feed for this location
     feed_url: &'static str,
     /// The Environment Canada web page for this location
     html_url: &'static str,
+    /// The latitude and longitude for the center of this location
+    coordinates: Coordinates,
     #[serde(skip)]
     cursor: (ProvinceOrTerritory, &'static str),
 }
@@ -175,6 +177,7 @@ impl Location {
             path: format!("/weather/{}/{}", d.province_or_territory.to_abbr(), d.slug),
             feed_url: d.feed_url,
             html_url: d.html_url,
+            coordinates: d.coordinates,
             cursor: (d.province_or_territory, d.slug),
         }
     }

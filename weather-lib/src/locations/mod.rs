@@ -102,7 +102,7 @@ impl fmt::Display for ProvinceOrTerritory {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, JsonSchema, Clone, Copy)]
 pub struct Coordinates {
     pub lat: f64,
     pub lon: f64,
