@@ -103,6 +103,12 @@ impl fmt::Display for ProvinceOrTerritory {
 }
 
 #[derive(Debug)]
+pub struct Coordinates {
+    pub lat: f64,
+    pub lon: f64,
+}
+
+#[derive(Debug)]
 pub struct OwnedLocation {
     pub name: String,
     pub province_or_territory: ProvinceOrTerritory,
@@ -110,6 +116,7 @@ pub struct OwnedLocation {
     pub tz: CanadaTz,
     pub feed_url: String,
     pub html_url: String,
+    pub coordinates: Coordinates,
 }
 
 #[derive(Debug)]
@@ -120,6 +127,7 @@ pub struct Location {
     pub tz: CanadaTz,
     pub feed_url: &'static str,
     pub html_url: &'static str,
+    pub coordinates: Coordinates,
 }
 
 static LOCATION_INDEX: OnceLock<BTreeMap<(ProvinceOrTerritory, &'static str), &'static Location>> =

@@ -6,7 +6,7 @@ pub mod special_weather_statements;
 use chrono::{DateTime, FixedOffset, Utc};
 use color_eyre::eyre::{eyre, Result};
 use schemars::JsonSchema;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::environment_canada::weather_feed::WeatherFeed;
 use current_conditions::CurrentConditions;
@@ -88,7 +88,7 @@ pub struct LocalDateTime {
 }
 
 /// Canadian timezone (https://www.timeanddate.com/time/zone/canada)
-#[derive(Debug, Serialize, JsonSchema, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, JsonSchema, Clone, Copy, PartialEq, Eq)]
 pub enum CanadaTz {
     #[serde(rename = "Canada/Atlantic")]
     Atlantic,
