@@ -126,8 +126,8 @@ async fn swagger_ui(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>
             <title>Weather Server | Swagger UI</title>
             <link
                 rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui.min.css"
-                integrity="sha512-oSy4rNbpqDUaoXIoFxhwKj/LFbkzUzo/WWJrn9RcIFLr4wm30upZ8r1OmhSRVvndMFZ2bhHEc2HklxjlS/aOyQ=="
+                href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.1.0/swagger-ui.min.css"
+                integrity="sha512-5TyX+tqywXCNq3Jxiu90K7MPhm9BwSBbOnFcthr+IlyJoWWEr/o/xnKpBWsnSn7cURPORDCJzIKW0o7RWHDOFA=="
                 crossorigin="anonymous"
                 referrerpolicy="no-referrer"
             />
@@ -135,14 +135,14 @@ async fn swagger_ui(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>
         <body>
             <div id="swagger-ui"></div>
             <script
-                src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui-bundle.min.js"
-                integrity="sha512-PijkKcRp7VDW1K2S8nNgljcNRrEQmazUc8sPiVRMciEuNzJzz2KeKb2Cjz/HdjZrKwmEYEyhOFZlOi0xzqWdqg=="
+                src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.1.0/swagger-ui-bundle.min.js"
+                integrity="sha512-heiOrsUSjQUS0m9NrVT+ow249yD5sF86f/Kkjq8jDvLn3NoUeYVuN9wzzkvfBcGLjNP6RgfbdRoI8p4/H7a50w=="
                 crossorigin="anonymous"
                 referrerpolicy="no-referrer"
             ></script>
             <script
-                src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui-standalone-preset.min.js"
-                integrity="sha512-dQDXlqaJDnXhlgBLVyoNPZeVC7dvQ1ylq/F9DRHbvJ4WMFVD1GtB7T8QmnWdhFy2sGJU2xxSsoPIEx85gnAXnw=="
+                src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.1.0/swagger-ui-standalone-preset.min.js"
+                integrity="sha512-FjxIf1eUBs2Eeieu6GGiW4ah6Ur+gzbAI+DOUD2bHAm/RsPTXqJ/KsytuuyfYo/fM9NQ2J4LgnUtyyBQyo2VZg=="
                 crossorigin="anonymous"
                 referrerpolicy="no-referrer"
             ></script>
