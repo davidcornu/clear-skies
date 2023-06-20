@@ -4,7 +4,7 @@ use tantivy::{
     query::QueryParser,
     schema::{Field, IndexRecordOption, NumericOptions, Schema, TextFieldIndexing, TextOptions},
     tokenizer::{
-        AsciiFoldingFilter, LowerCaser, NgramTokenizer, RawTokenizer, TextAnalyzer,
+        AsciiFoldingFilter, LowerCaser, NgramTokenizer, SimpleTokenizer, TextAnalyzer,
         TokenizerManager,
     },
     Document, Index,
@@ -39,7 +39,7 @@ fn keyword_options() -> TextOptions {
 }
 
 fn keyword_tokenizer() -> TextAnalyzer {
-    TextAnalyzer::builder(RawTokenizer::default())
+    TextAnalyzer::builder(SimpleTokenizer::default())
         .filter(LowerCaser)
         .build()
 }
@@ -144,13 +144,17 @@ impl LocationSearch {
     }
 
     fn build_query_parser(index: &Index, fields: &SearchFields) -> QueryParser {
-        QueryParser::for_index(
+        let mut query_parser = QueryParser::for_index(
             &index,
             vec![
                 fields.name,
                 fields.province_or_territory,
                 fields.province_or_territory_abbr,
             ],
-        )
+        );
+
+        query_parser.set_conjunction_by_default();
+
+        query_parser
     }
 }
