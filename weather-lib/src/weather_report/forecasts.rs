@@ -113,8 +113,8 @@ impl Content {
 
 #[derive(Debug, Clone, PartialEq, Serialize, JsonSchema)]
 pub struct Forecast {
-    /// A short description of forecasted weather conditions (e.g. "Chance of showers")
-    pub conditions: String,
+    /// A short description of forecasted weather condition (e.g. "Chance of showers")
+    pub condition: String,
     /// The [probability of precipitation](https://www.canada.ca/en/environment-climate-change/services/sky-watchers/glossary.html#wsDTE9CAF366) as a percentage
     pub probability_of_precipitation: Option<u8>,
     /// The forecasted temperature
@@ -140,7 +140,7 @@ impl Forecast {
 
         Ok((
             Forecast {
-                conditions: parsed_title.conditions,
+                condition: parsed_title.condition,
                 probability_of_precipitation: parsed_title.probability_of_precipitation,
                 temperature: parsed_title.temperature,
                 summary: summary.to_string(),

@@ -58,7 +58,7 @@ fn probability_of_precipitation(input: &str) -> IResult<&str, u8> {
 pub struct Parsed {
     pub weekday: Weekday,
     pub is_night: bool,
-    pub conditions: String,
+    pub condition: String,
     pub temperature: Temperature,
     pub probability_of_precipitation: Option<u8>,
 }
@@ -75,10 +75,10 @@ pub fn parse(input: &str) -> Result<(&str, Parsed), NomError<String>> {
             ),
             opt(preceded(char(' '), probability_of_precipitation)),
         )),
-        |((weekday, is_night), conditions, temperature, pop)| Parsed {
+        |((weekday, is_night), condition, temperature, pop)| Parsed {
             weekday,
             is_night,
-            conditions: conditions.to_string(),
+            condition: condition.to_string(),
             temperature,
             probability_of_precipitation: pop,
         },
@@ -112,7 +112,7 @@ mod tests {
                 Parsed {
                     weekday: Weekday::Sun,
                     is_night: true,
-                    conditions: "Chance of showers".to_string(),
+                    condition: "Chance of showers".to_string(),
                     temperature: Temperature {
                         trend: TemperatureTrend::High,
                         degrees_c: 19.0
@@ -129,7 +129,7 @@ mod tests {
                 Parsed {
                     weekday: Weekday::Thu,
                     is_night: true,
-                    conditions: "Clear".to_string(),
+                    condition: "Clear".to_string(),
                     temperature: Temperature {
                         trend: TemperatureTrend::Low,
                         degrees_c: 1.0
