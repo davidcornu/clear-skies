@@ -15,6 +15,7 @@ indoc = "2.0.1"
 schemars = "0.8.12"
 serde = { version = "1.0.163", features = ["derive", "rc"] }
 serde_json = "1.0.96"
-tokio = { version = "1.28.2", default-features = false, features = ["macros", "rt-multi-thread"] }
+tantivy = "0.20.2"
+tokio = { version = "1.28.2", default-features = false, features = ["macros", "rt-multi-thread", "rt"] }
 weather-lib = { path = "../weather-lib" }
 weather-sync = { path = "../weather-sync" }

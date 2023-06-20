@@ -1,3 +1,5 @@
+mod location_search;
+
 use std::{net::SocketAddrV4, ops::Bound, sync::Arc};
 
 use clap::Parser;
@@ -10,8 +12,10 @@ use dropshot::{
 use http::Response;
 use hyper::Body;
 use indoc::indoc;
+use location_search::LocationSearch;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use tokio::sync::OnceCell;
 use weather_lib::{
     locations::{location_index, Coordinates, ProvinceOrTerritory},
     weather_report::{CanadaTz, WeatherReport},
@@ -35,6 +39,25 @@ fn main() -> Result<()> {
 struct State {
     open_api_definition: serde_json::Value,
     sync_client: SyncClient,
+    location_search: OnceCell<LocationSearch>,
+}
+
+impl State {
+    pub async fn location_search(&self) -> Result<&LocationSearch> {
+        self.location_search
+            .get_or_try_init(|| async {
+                tokio::task::spawn_blocking(|| {
+                    let location_search = LocationSearch::new()?;
+                    location_search.index_locations(
+                        weather_lib::locations::data::LOCATIONS.iter().enumerate(),
+                    )?;
+
+                    Ok(location_search)
+                })
+                .await?
+            })
+            .await
+    }
 }
 
 #[tokio::main]
@@ -49,6 +72,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
     api.register(openapi_schema).unwrap();
     api.register(swagger_ui).unwrap();
     api.register(locations).unwrap();
+    api.register(locations_search).unwrap();
     api.register(weather).unwrap();
 
     let state = Arc::new(State {
@@ -57,6 +81,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
             .json()
             .map_err(|e| eyre!("failed to generate openapi spec: {e:?}"))?,
         sync_client: SyncClient::new(Default::default()),
+        location_search: OnceCell::new(),
     });
 
     let server_config = ConfigDropshot {
@@ -225,6 +250,38 @@ async fn locations(
             slug: last_item.cursor.1.to_string(),
         },
     )?))
+}
+
+#[derive(Deserialize, JsonSchema)]
+struct LocationsSearchQuery {
+    /// Search query (e.g. "montreal")
+    q: String,
+}
+
+/// Fuzzy search all available locations
+#[endpoint(method = GET, path = "/locations/search")]
+async fn locations_search(
+    rqctx: RequestContext<Arc<State>>,
+    query: Query<LocationsSearchQuery>,
+) -> Result<HttpResponseOk<Vec<Location>>, HttpError> {
+    let state = rqctx.context();
+    let search = state.location_search().await.map_err(|err| {
+        HttpError::for_internal_error(format!("failed to initialize search index: {err:#?}"))
+    })?;
+
+    let search_text = query.into_inner().q;
+    let results = search
+        .query(&search_text)
+        .map_err(|err| {
+            HttpError::for_internal_error(format!(
+                "failed to execute query {search_text:?}: {err:#?}"
+            ))
+        })?
+        .into_iter()
+        .map(|idx| Location::from_data(&weather_lib::locations::data::LOCATIONS[idx]))
+        .collect::<Vec<_>>();
+
+    Ok(HttpResponseOk(results))
 }
 
 #[derive(Deserialize, JsonSchema, Debug)]
