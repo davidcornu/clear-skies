@@ -77,7 +77,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
 
     let state = Arc::new(State {
         open_api_definition: api
-            .openapi("weather-server", "1.0.0")
+            .openapi("Clear Skies", env!("CARGO_PKG_VERSION"))
             .json()
             .map_err(|e| eyre!("failed to generate openapi spec: {e:?}"))?,
         sync_client: SyncClient::new(Default::default()),
@@ -100,11 +100,11 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
 }
 
 /// Returns the OpenAPI v3.0.3 specification for this server.
-#[endpoint {
+#[endpoint(
     method = GET,
     path = "/openapi.json",
     tags = ["documentation"],
-}]
+)]
 async fn openapi_schema(
     rqctx: RequestContext<Arc<State>>,
 ) -> Result<HttpResponseOk<serde_json::Value>, HttpError> {
@@ -112,11 +112,11 @@ async fn openapi_schema(
 }
 
 /// Renders Swagger UI for this server's OpenAPI specification.
-#[endpoint {
+#[endpoint(
     method = GET,
     path = "/swagger-ui",
     tags = ["documentation"],
-}]
+)]
 async fn swagger_ui(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>, HttpError> {
     let body = indoc! {r#"
         <!DOCTYPE html>
@@ -215,7 +215,11 @@ struct LocationPage {
 }
 
 /// Listing of all available locations
-#[endpoint(method = GET, path = "/locations")]
+#[endpoint(
+    method = GET,
+    path = "/locations",
+    tags = ["locations"]
+)]
 async fn locations(
     rqctx: RequestContext<Arc<State>>,
     query: Query<PaginationParams<EmptyScanParams, LocationPage>>,
@@ -259,7 +263,11 @@ struct LocationsSearchQuery {
 }
 
 /// Fuzzy search all available locations
-#[endpoint(method = GET, path = "/locations/search")]
+#[endpoint(
+    method = GET,
+    path = "/locations/search",
+    tags = ["locations"]
+)]
 async fn locations_search(
     rqctx: RequestContext<Arc<State>>,
     query: Query<LocationsSearchQuery>,
@@ -290,7 +298,11 @@ struct WeatherPath {
     slug: String,
 }
 
-#[endpoint(method = GET, path = "/weather/{province_or_territory}/{slug}")]
+#[endpoint(
+    method = GET,
+    path = "/weather/{province_or_territory}/{slug}",
+    tags = ["weather"]
+)]
 async fn weather(
     rqctx: RequestContext<Arc<State>>,
     path: Path<WeatherPath>,
