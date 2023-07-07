@@ -6,3 +6,6 @@ members = [
     "weather-server",
     "weather-sync",
 ]
+
+[profile.release]
+debug = 1
