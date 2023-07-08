@@ -64,6 +64,7 @@
 
 	packages.container = pkgs.dockerTools.buildLayeredImage {
 	  name = "weather-server";
+	  tag = "latest";
 	  contents = [ packages.default ];
 	  config.Cmd = [ "${packages.default}/bin/weather-server" ];
 	};
