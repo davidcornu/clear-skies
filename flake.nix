@@ -61,6 +61,11 @@
           RUST_BACKTRACE = 1;
           cargoTestExtraArgs = "-- --nocapture";
         });
+
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = [ rustToolchain ];
+          buildInputs = with pkgs; [ ];
+        };
       }
     );
 }
