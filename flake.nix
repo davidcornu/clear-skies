@@ -67,7 +67,7 @@
           name = "weather-server";
           tag = "latest";
           contents = [ packages.default ];
-          config.Cmd = [ "${packages.default}/bin/weather-server" ];
+          config.Cmd = [ "${packages.default}/bin/weather-server --bind-addr 0.0.0.0:8080" ];
         };
 
         devShells.default = pkgs.mkShell {
