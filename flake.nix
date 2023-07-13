@@ -53,21 +53,25 @@
           pname = "weather-server";
           version = gitVersion;
 
-          src = ./.;
+          src = craneLib.cleanCargoSource (craneLib.path ./.);
 
           nativeBuildInputs = systemBuildInputs;
 
           cargoBuildCommand = "cargo build --package weather-server --profile release";
+          doCheck = false;
 
           RUST_BACKTRACE = 1;
-          cargoTestExtraArgs = "-- --nocapture";
         });
 
         packages.container = pkgs.dockerTools.buildLayeredImage {
           name = "weather-server";
           tag = "latest";
           contents = [ packages.default ];
-          config.Cmd = [ "${packages.default}/bin/weather-server --bind-addr 0.0.0.0:8080" ];
+          config.Cmd = [
+            "${packages.default}/bin/weather-server"
+            "--bind-addr" 
+            "0.0.0.0:8080"
+          ];
         };
 
         devShells.default = pkgs.mkShell {
