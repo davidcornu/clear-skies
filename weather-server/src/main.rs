@@ -319,7 +319,7 @@ async fn weather(
 
     let report = state
         .sync_client
-        .fetch_report(&location)
+        .fetch_report(location)
         .await
         .map_err(|e| {
             HttpError::for_internal_error(format!("error while fetching report: {e:#?}"))

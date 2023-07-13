@@ -60,14 +60,14 @@ static MISSING_TIMEZONES: OnceLock<Vec<MissingTimezone>> = OnceLock::new();
 // same timezone.
 fn missing_timezones() -> &'static Vec<MissingTimezone> {
     MISSING_TIMEZONES.get_or_init(|| {
-        serde_json::from_str(&include_str!("../data/missing_timezones.json"))
+        serde_json::from_str(include_str!("../data/missing_timezones.json"))
             .expect("failed to deserialize missing timezones")
     })
 }
 
 fn git_project_root() -> Result<PathBuf> {
     let output = Command::new("git")
-        .args(&["rev-parse", "--show-toplevel"])
+        .args(["rev-parse", "--show-toplevel"])
         .output()?;
 
     if !output.status.success() {
@@ -98,7 +98,7 @@ impl MappingBuilder {
             project_root: git_project_root()?,
             cache_dir: cache_dir.into(),
             slugs: SlugRegistry::new(),
-            geocoder: mapbox_access_token.map(|t| Geocoder::new(t)),
+            geocoder: mapbox_access_token.map(Geocoder::new),
             newly_geocoded: Default::default(),
             tokio_rt: runtime::Builder::new_current_thread()
                 .enable_all()
@@ -222,7 +222,7 @@ impl MappingBuilder {
                 let fallback = missing_timezones().iter().find_map(
                     |MissingTimezone(candidate_province, candidate_name, tz)| {
                         (province_or_territory == *candidate_province && &name == candidate_name)
-                            .then(|| *tz)
+                            .then_some(*tz)
                     },
                 );
 
@@ -329,7 +329,7 @@ fn adjust_name(input: &str) -> String {
         return input.to_string();
     };
 
-    alternate = alternate.trim_end_matches(")");
+    alternate = alternate.trim_end_matches(')');
 
     match alternate {
         "University of" | "Réserve faunique" | "Parc national" | "Réservoir" => {
@@ -352,10 +352,8 @@ fn slug(input: &str) -> String {
     for c in ascii.chars() {
         if c.is_ascii_alphabetic() {
             slug.push(c.to_ascii_lowercase())
-        } else {
-            if !slug.ends_with('-') {
-                slug.push('-');
-            }
+        } else if !slug.ends_with('-') {
+            slug.push('-');
         }
     }
 

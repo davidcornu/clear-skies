@@ -145,7 +145,7 @@ impl LocationSearch {
 
     fn build_query_parser(index: &Index, fields: &SearchFields) -> QueryParser {
         let mut query_parser = QueryParser::for_index(
-            &index,
+            index,
             vec![
                 fields.name,
                 fields.province_or_territory,

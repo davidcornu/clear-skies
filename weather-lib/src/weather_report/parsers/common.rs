@@ -113,7 +113,7 @@ pub fn local_datetime(input: &str) -> IResult<&str, LocalDateTime> {
                 .single()
                 .map(|dt| LocalDateTime {
                     ts: dt.fixed_offset(),
-                    tz: tz,
+                    tz,
                 })
         },
     )(input)

@@ -12,7 +12,7 @@ pub struct Geocoder {
 static CACHE: OnceLock<HashMap<&'static str, LonLat>> = OnceLock::new();
 
 pub fn cache() -> &'static HashMap<&'static str, LonLat> {
-    CACHE.get_or_init(|| serde_json::from_str(&include_str!("../data/coordinates.json")).unwrap())
+    CACHE.get_or_init(|| serde_json::from_str(include_str!("../data/coordinates.json")).unwrap())
 }
 
 impl Geocoder {
