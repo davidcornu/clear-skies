@@ -66,10 +66,10 @@
         packages.container = pkgs.dockerTools.buildLayeredImage {
           name = "weather-server";
           tag = "latest";
-          contents = [ packages.default ];
+          contents = [ pkgs.cacert packages.default ];
           config.Cmd = [
             "${packages.default}/bin/weather-server"
-            "--bind-addr" 
+            "--bind-addr"
             "0.0.0.0:8080"
           ];
         };
