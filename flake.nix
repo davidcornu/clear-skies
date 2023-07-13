@@ -46,7 +46,8 @@
             [ pkgs.darwin.apple_sdk.frameworks.Security ]
           else
             [ ];
-      in rec
+      in
+      rec
       {
         packages.default = craneLib.buildPackage ({
           pname = "weather-server";
@@ -62,15 +63,15 @@
           cargoTestExtraArgs = "-- --nocapture";
         });
 
-	packages.container = pkgs.dockerTools.buildLayeredImage {
-	  name = "weather-server";
-	  tag = "latest";
-	  contents = [ packages.default ];
-	  config.Cmd = [ "${packages.default}/bin/weather-server" ];
-	};
+        packages.container = pkgs.dockerTools.buildLayeredImage {
+          name = "weather-server";
+          tag = "latest";
+          contents = [ packages.default ];
+          config.Cmd = [ "${packages.default}/bin/weather-server" ];
+        };
 
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [ rustToolchain ];
+          nativeBuildInputs = [ rustToolchain ] ++ systemBuildInputs;
           buildInputs = with pkgs; [ ];
         };
       }
