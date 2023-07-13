@@ -16,3 +16,7 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@v1.4
       - run: |
           nix build .#container
+          docker load < result
+          flyctl deploy --local-only --image "weather-server:latest"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
