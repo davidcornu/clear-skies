@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clear Skies</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/modern-css-reset@1.4.0/dist/reset.min.css"
+      integrity="sha256-F/jieNyjUBWCFEvO3J3FwSP2zHEcxoF6QAz0ppnZVME="
+      crossorigin="anonymous"
+    />
+    <style>
+      /* https://every-layout.dev/rudiments/modular-scale/ */
+      :root {
+        --ratio: 1.5;
+        --s-5: calc(var(--s-4) / var(--ratio));
+        --s-4: calc(var(--s-3) / var(--ratio));
+        --s-3: calc(var(--s-2) / var(--ratio));
+        --s-2: calc(var(--s-1) / var(--ratio));
+        --s-1: calc(var(--s0) / var(--ratio));
+        --s0: 1rem;
+        --s1: calc(var(--s0) * var(--ratio));
+        --s2: calc(var(--s1) * var(--ratio));
+        --s3: calc(var(--s2) * var(--ratio));
+        --s4: calc(var(--s3) * var(--ratio));
+        --s5: calc(var(--s4) * var(--ratio));
+      }
+
+      /* https://utopia.fyi/type/calculator?c=320,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+      :root {
+        --step--2: clamp(0.78rem, calc(0.77rem + 0.03vw), 0.8rem);
+        --step--1: clamp(0.94rem, calc(0.92rem + 0.11vw), 1rem);
+        --step-0: clamp(1.13rem, calc(1.08rem + 0.22vw), 1.25rem);
+        --step-1: clamp(1.35rem, calc(1.28rem + 0.37vw), 1.56rem);
+        --step-2: clamp(1.62rem, calc(1.5rem + 0.58vw), 1.95rem);
+        --step-3: clamp(1.94rem, calc(1.77rem + 0.87vw), 2.44rem);
+        --step-4: clamp(2.33rem, calc(2.08rem + 1.25vw), 3.05rem);
+        --step-5: clamp(2.8rem, calc(2.45rem + 1.77vw), 3.82rem);
+      }
+
+      h1 {
+        font-size: var(--step-5);
+      }
+      h2 {
+        font-size: var(--step-4);
+      }
+      body {
+        font-size: var(--step-0);
+      }
+
+      .container {
+        box-sizing: content-box;
+        max-inline-size: 60ch;
+        margin-inline: auto;
+        padding-inline-start: var(--s1);
+        padding-inline-end: var(--s1);
+        padding-top: var(--s1);
+      }
+
+      .container > * + * {
+        margin-block-start: 0.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Clear Skies 🌤️</h1>
+      <p>
+        A simple weather API backed by Environment Canada's
+        <a
+          href="https://www.canada.ca/en/environment-climate-change/services/weather-general-tools-resources/weatheroffice-online-services/data-services.html#toc1"
+          >Current Condition & Forecast Atom feeds</a
+        >.
+      </p>
+      <h2>Getting started</h2>
+      <ul>
+        <li><a href="/openapi.json">OpenAPI Specification</a></li>
+        <li><a href="/swagger-ui">Swagger UI</a></li>
+        <li><a href="https://github.com/davidcornu/weather">Source Code</a></li>
+      </ul>
+      <h2>About</h2>
+      <p>
+        Clear Skies is a hobby project by
+        <a href="https://cosocial.ca/@dc">David Cornu</a>.
+      </p>
+      <p>
+        You are welcome to use the instance hosted on
+        <a href="https://clear-skies.ca">clear-skies.ca</a> (thanks to
+        <a href="https://fly.io/">Fly.io</a>'s free tier) with the understanding
+        that it comes with no uptime guarantees. Please host your own instance
+        if you need something more robust.
+      </p>
+    </div>
+  </body>
+</html>

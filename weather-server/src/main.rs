@@ -11,7 +11,6 @@ use dropshot::{
 };
 use http::Response;
 use hyper::Body;
-use indoc::indoc;
 use location_search::LocationSearch;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -69,6 +68,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
 
     let mut api = ApiDescription::new();
 
+    api.register(index).unwrap();
     api.register(openapi_schema).unwrap();
     api.register(swagger_ui).unwrap();
     api.register(locations).unwrap();
@@ -99,6 +99,21 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
     Ok(())
 }
 
+#[endpoint(
+    method = GET,
+    path = "/",
+    unpublished = true,
+)]
+async fn index(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>, HttpError> {
+    let body = include_str!("html/index.html");
+    let response = Response::builder()
+        .header("Content-Type", "text/html; charset=utf-8")
+        .body(Body::from(body))
+        .unwrap();
+
+    Ok(response)
+}
+
 /// Returns the OpenAPI v3.0.3 specification for this server.
 #[endpoint(
     method = GET,
@@ -116,54 +131,10 @@ async fn openapi_schema(
     method = GET,
     path = "/swagger-ui",
     tags = ["documentation"],
+    unpublished = true
 )]
 async fn swagger_ui(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>, HttpError> {
-    let body = indoc! {r#"
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Weather Server | Swagger UI</title>
-            <link
-                rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.1.0/swagger-ui.min.css"
-                integrity="sha512-5TyX+tqywXCNq3Jxiu90K7MPhm9BwSBbOnFcthr+IlyJoWWEr/o/xnKpBWsnSn7cURPORDCJzIKW0o7RWHDOFA=="
-                crossorigin="anonymous"
-                referrerpolicy="no-referrer"
-            />
-        </head>
-        <body>
-            <div id="swagger-ui"></div>
-            <script
-                src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.1.0/swagger-ui-bundle.min.js"
-                integrity="sha512-heiOrsUSjQUS0m9NrVT+ow249yD5sF86f/Kkjq8jDvLn3NoUeYVuN9wzzkvfBcGLjNP6RgfbdRoI8p4/H7a50w=="
-                crossorigin="anonymous"
-                referrerpolicy="no-referrer"
-            ></script>
-            <script
-                src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.1.0/swagger-ui-standalone-preset.min.js"
-                integrity="sha512-FjxIf1eUBs2Eeieu6GGiW4ah6Ur+gzbAI+DOUD2bHAm/RsPTXqJ/KsytuuyfYo/fM9NQ2J4LgnUtyyBQyo2VZg=="
-                crossorigin="anonymous"
-                referrerpolicy="no-referrer"
-            ></script>
-            <script>
-                window.onload = () => {
-                    window.ui = SwaggerUIBundle({
-                        url: '/openapi.json',
-                        dom_id: '#swagger-ui',
-                        presets: [
-                            SwaggerUIBundle.presets.apis,
-                            SwaggerUIStandalonePreset
-                        ],
-                        layout: "StandaloneLayout",
-                        deepLinking: true,
-                    });
-                };
-            </script>
-        </body>
-        </html>
-    "#};
-
+    let body = include_str!("html/swagger-ui.html");
     let response = Response::builder()
         .header("Content-Type", "text/html; charset=utf-8")
         .body(Body::from(body))
