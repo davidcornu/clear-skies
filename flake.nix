@@ -46,17 +46,23 @@
             [ ];
 
         nameAndVersion = craneLib.crateNameFromCargoToml { cargoToml = ./weather-server/Cargo.toml; };
+
+        commonArgs = nameAndVersion // {
+          src = craneLib.cleanCargoSource (craneLib.path ./.);
+          cargoExtraArgs = "--package weather-server";
+          nativeBuildInputs = systemBuildInputs;
+
+          RUST_BACKTRACE = 1;
+        };
+
+        cargoArtifacts = craneLib.buildDepsOnly commonArgs;
       in
       rec
       {
-        packages.default = craneLib.buildPackage (nameAndVersion // {
-          src = craneLib.cleanCargoSource (craneLib.path ./.);
+        packages.default = craneLib.buildPackage (commonArgs // {
+          inherit cargoArtifacts;
 
-          nativeBuildInputs = systemBuildInputs;
-          cargoExtraArgs = "--package weather-server";
           doCheck = false;
-
-          RUST_BACKTRACE = 1;
         });
 
         packages.container = pkgs.dockerTools.buildLayeredImage {
