@@ -24,8 +24,6 @@
     }: flake-utils.lib.eachDefaultSystem (
       system:
       let
-        gitVersion = if self ? rev then self.rev else "devel";
-
         pkgs = (import nixpkgs) {
           inherit system;
 
@@ -46,18 +44,16 @@
             [ pkgs.darwin.apple_sdk.frameworks.Security ]
           else
             [ ];
+
+        nameAndVersion = craneLib.crateNameFromCargoToml { cargoToml = ./weather-server/Cargo.toml; };
       in
       rec
       {
-        packages.default = craneLib.buildPackage ({
-          pname = "weather-server";
-          version = gitVersion;
-
+        packages.default = craneLib.buildPackage (nameAndVersion // {
           src = craneLib.cleanCargoSource (craneLib.path ./.);
 
           nativeBuildInputs = systemBuildInputs;
-
-          cargoBuildCommand = "cargo build --package weather-server --profile release";
+          cargoExtraArgs = "--package weather-server";
           doCheck = false;
 
           RUST_BACKTRACE = 1;
