@@ -47,8 +47,16 @@
 
         nameAndVersion = craneLib.crateNameFromCargoToml { cargoToml = ./weather-server/Cargo.toml; };
 
+        htmlFilter = path: _type: (builtins.match ".*\\.html$" path) != null;
+        filter = path: type: (craneLib.filterCargoSources path type) || (htmlFilter path type);
+
+        src = pkgs.lib.cleanSourceWith {
+          src = craneLib.path ./.;
+          inherit filter;
+        };
+
         commonArgs = nameAndVersion // {
-          src = craneLib.cleanCargoSource (craneLib.path ./.);
+          inherit src;
           cargoExtraArgs = "--package weather-server";
           nativeBuildInputs = systemBuildInputs;
 
