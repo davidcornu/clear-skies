@@ -3430,7 +3430,6 @@ dependencies = [
  "dropshot",
  "http",
  "hyper",
- "indoc",
  "schemars",
  "serde",
  "serde_json",
