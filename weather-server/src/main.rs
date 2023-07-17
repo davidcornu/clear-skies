@@ -12,6 +12,7 @@ use dropshot::{
 use http::Response;
 use hyper::Body;
 use location_search::LocationSearch;
+use rust_embed::RustEmbed;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use tokio::sync::OnceCell;
@@ -99,19 +100,29 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
     Ok(())
 }
 
+#[derive(RustEmbed)]
+#[folder = "src/html"]
+struct StaticAsset;
+
+fn static_response(file_path: &str) -> Result<Response<Body>, HttpError> {
+    let file = StaticAsset::get(file_path)
+        .ok_or_else(|| HttpError::for_not_found(None, format!("failed to load {file_path:?}")))?;
+
+    let response = Response::builder()
+        .header("Content-Type", "text/html; charset=utf-8")
+        .body(Body::from(file.data))
+        .unwrap();
+
+    Ok(response)
+}
+
 #[endpoint(
     method = GET,
     path = "/",
     unpublished = true,
 )]
 async fn index(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>, HttpError> {
-    let body = include_str!("html/index.html");
-    let response = Response::builder()
-        .header("Content-Type", "text/html; charset=utf-8")
-        .body(Body::from(body))
-        .unwrap();
-
-    Ok(response)
+    static_response("index.html")
 }
 
 /// Returns the OpenAPI v3.0.3 specification for this server.
@@ -134,13 +145,7 @@ async fn openapi_schema(
     unpublished = true
 )]
 async fn swagger_ui(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>, HttpError> {
-    let body = include_str!("html/swagger-ui.html");
-    let response = Response::builder()
-        .header("Content-Type", "text/html; charset=utf-8")
-        .body(Body::from(body))
-        .unwrap();
-
-    Ok(response)
+    static_response("swagger-ui.html")
 }
 
 /// A location for which weather data is available
