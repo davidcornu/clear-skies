@@ -47,8 +47,8 @@
 
         nameAndVersion = craneLib.crateNameFromCargoToml { cargoToml = ./weather-server/Cargo.toml; };
 
-        htmlFilter = path: _type: (builtins.match ".*\\.html$" path) != null;
-        filter = path: type: (craneLib.filterCargoSources path type) || (htmlFilter path type);
+        staticFilter = path: _type: (builtins.match "^.*/weather-server/src/static/.*\\.(html|js|css)$" path) != null;
+        filter = path: type: (craneLib.filterCargoSources path type) || (staticFilter path type);
 
         src = pkgs.lib.cleanSourceWith {
           src = craneLib.path ./.;
