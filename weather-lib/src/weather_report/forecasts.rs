@@ -37,7 +37,7 @@ impl<Tz: TimeZone> Builder<Tz> {
                 None => {
                     self.forecasts.push(Day {
                         date: self.local_time.date_naive(),
-                        content: Content::Night(forecast),
+                        forecast: DailyForecast::Night(forecast),
                     });
 
                     self.local_time = self.local_time.clone() + Days::new(1);
@@ -54,7 +54,7 @@ impl<Tz: TimeZone> Builder<Tz> {
 
             self.forecasts.push(Day {
                 date: self.local_time.date_naive(),
-                content: Content::Abridged(forecast),
+                forecast: DailyForecast::Abridged(forecast),
             });
 
             self.local_time = self.local_time.clone() + Days::new(1);
@@ -72,16 +72,16 @@ impl<Tz: TimeZone> Builder<Tz> {
 #[derive(Debug, Serialize, JsonSchema)]
 pub struct Day {
     pub date: NaiveDate,
-    pub content: Content,
+    pub forecast: DailyForecast,
 }
 
 impl Day {
     fn make_detailed(&mut self, night: Forecast) -> Result<()> {
-        let Content::Abridged(ref day) = self.content else {
+        let DailyForecast::Abridged(ref day) = self.forecast else {
             return Err(eyre!("forecast is already detailed"))
         };
 
-        self.content = Content::Detailed {
+        self.forecast = DailyForecast::Detailed {
             day: day.clone(),
             night,
         };
@@ -92,7 +92,8 @@ impl Day {
 
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
-pub enum Content {
+#[serde(tag = "scope", content = "content")]
+pub enum DailyForecast {
     /// Evening forecast for the current day
     Night(Forecast),
     /// Separate day and night forecasts (usually issued for the next 5 days)
@@ -101,12 +102,12 @@ pub enum Content {
     Abridged(Forecast),
 }
 
-impl Content {
+impl DailyForecast {
     pub fn forecasts(&self) -> Vec<&Forecast> {
         match self {
-            Content::Night(forecast) => vec![forecast],
-            Content::Detailed { day, night } => vec![day, night],
-            Content::Abridged(forecast) => vec![forecast],
+            DailyForecast::Night(forecast) => vec![forecast],
+            DailyForecast::Detailed { day, night } => vec![day, night],
+            DailyForecast::Abridged(forecast) => vec![forecast],
         }
     }
 }
