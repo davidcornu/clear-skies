@@ -69,8 +69,6 @@
       {
         packages.default = craneLib.buildPackage (commonArgs // {
           inherit cargoArtifacts;
-
-          doCheck = false;
         });
 
         packages.container = pkgs.dockerTools.buildLayeredImage {

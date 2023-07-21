@@ -344,3 +344,16 @@ async fn weather(
 
     Ok(HttpResponseOk(report))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_required_static_files_are_present() {
+        assert!(StaticAsset::get("html/index.html").is_some());
+        assert!(StaticAsset::get("html/swagger-ui.html").is_some());
+        assert!(StaticAsset::get("assets/try.css").is_some());
+        assert!(StaticAsset::get("assets/try.js").is_some());
+    }
+}
