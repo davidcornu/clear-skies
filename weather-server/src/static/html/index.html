@@ -9,6 +9,7 @@
       integrity="sha256-F/jieNyjUBWCFEvO3J3FwSP2zHEcxoF6QAz0ppnZVME="
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/assets/try.css" />
     <style>
       /* https://every-layout.dev/rudiments/modular-scale/ */
       :root {
@@ -44,8 +45,17 @@
       h2 {
         font-size: var(--step-4);
       }
-      body {
+      h3 {
+        font-size: var(--step-3);
+      }
+      h4 {
+        font-size: var(--step-2);
+      }
+      p {
         font-size: var(--step-0);
+      }
+      body {
+        font-size: var(--step--1);
       }
 
       .container {
@@ -55,6 +65,7 @@
         padding-inline-start: var(--s1);
         padding-inline-end: var(--s1);
         padding-top: var(--s1);
+        padding-bottom: var(--s1);
       }
 
       .container > * + * {
@@ -91,6 +102,19 @@
         that it comes with no uptime guarantees. Please host your own instance
         if you need something more robust.
       </p>
+      <h2>Try it out</h2>
+      <div id="try"></div>
     </div>
+
+    <script type="module">
+      import Try from "/assets/try.js";
+
+      const tryApp = new Try({
+        target: document.getElementById("try"),
+        props: {
+          apiURL: window.location.origin,
+        },
+      });
+    </script>
   </body>
 </html>

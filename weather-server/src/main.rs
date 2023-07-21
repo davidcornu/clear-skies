@@ -1,6 +1,6 @@
 mod location_search;
 
-use std::{net::SocketAddrV4, ops::Bound, sync::Arc};
+use std::{net::SocketAddrV4, ops::Bound, path, sync::Arc};
 
 use clap::Parser;
 use color_eyre::eyre::{eyre, Result};
@@ -75,6 +75,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
     api.register(locations).unwrap();
     api.register(locations_search).unwrap();
     api.register(weather).unwrap();
+    api.register(assets).unwrap();
 
     let state = Arc::new(State {
         open_api_definition: api
@@ -101,19 +102,55 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
 }
 
 #[derive(RustEmbed)]
-#[folder = "src/html"]
+#[folder = "src/static"]
 struct StaticAsset;
 
 fn static_response(file_path: &str) -> Result<Response<Body>, HttpError> {
     let file = StaticAsset::get(file_path)
         .ok_or_else(|| HttpError::for_not_found(None, format!("failed to load {file_path:?}")))?;
 
+    let content_type = match std::path::Path::new(file_path)
+        .extension()
+        .and_then(|e| e.to_str())
+    {
+        Some("html") => "text/html; charset=utf-8",
+        Some("css") => "text/css; charset=utf-8",
+        Some("js") => "text/javascript; charset=utf-8",
+        _ => "application/octet-stream",
+    };
+
     let response = Response::builder()
-        .header("Content-Type", "text/html; charset=utf-8")
+        .header("Content-Type", content_type)
         .body(Body::from(file.data))
         .unwrap();
 
     Ok(response)
+}
+
+#[derive(Deserialize, JsonSchema, Debug)]
+struct AssetsPath {
+    file_path: path::PathBuf,
+}
+
+#[endpoint(
+    method = GET,
+    path = "/assets/{file_path}",
+    unpublished = true,
+)]
+async fn assets(
+    _rqctx: RequestContext<Arc<State>>,
+    path_params: Path<AssetsPath>,
+) -> Result<Response<Body>, HttpError> {
+    let path_params = path_params.into_inner();
+
+    // Sanitize the path parameter to make sure we only read
+    let Some(file_name) = path_params.file_path.file_name() else {
+        return Err(HttpError::for_not_found(None, "malformed request".to_string()));
+    };
+
+    let base_path = path::Path::new("assets").join(file_name);
+
+    static_response(&base_path.to_string_lossy())
 }
 
 #[endpoint(
@@ -122,7 +159,7 @@ fn static_response(file_path: &str) -> Result<Response<Body>, HttpError> {
     unpublished = true,
 )]
 async fn index(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>, HttpError> {
-    static_response("index.html")
+    static_response("html/index.html")
 }
 
 /// Returns the OpenAPI v3.0.3 specification for this server.
@@ -145,7 +182,7 @@ async fn openapi_schema(
     unpublished = true
 )]
 async fn swagger_ui(_rqctx: RequestContext<Arc<State>>) -> Result<Response<Body>, HttpError> {
-    static_response("swagger-ui.html")
+    static_response("html/swagger-ui.html")
 }
 
 /// A location for which weather data is available
