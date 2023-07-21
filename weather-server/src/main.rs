@@ -154,7 +154,10 @@ struct Location {
     /// The location name as listed by Environment Canada
     name: &'static str,
     /// The province or territory where the location is
-    province_or_territory: &'static str,
+    province_or_territory: ProvinceOrTerritory,
+    /// The URL [slug](https://developer.mozilla.org/en-US/docs/Glossary/Slug) for this location.
+    /// Location slugs are unique by province/territory.
+    slug: &'static str,
     /// The location's local timezone
     tz: CanadaTz,
     /// The path to retrieve the weather for this location
@@ -173,7 +176,8 @@ impl Location {
     fn from_data(d: &weather_lib::locations::Location) -> Self {
         Self {
             name: d.name,
-            province_or_territory: d.province_or_territory.name(),
+            province_or_territory: d.province_or_territory,
+            slug: d.slug,
             tz: d.tz,
             path: format!("/weather/{}/{}", d.province_or_territory.to_abbr(), d.slug),
             feed_url: d.feed_url,
