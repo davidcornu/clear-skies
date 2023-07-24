@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v22
+      - uses: DeterminateSystems/nix-installer-action@v4
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: DeterminateSystems/magic-nix-cache-action@v2
       - uses: superfly/flyctl-actions/setup-flyctl@v1.4
       - run: |
           nix build .#container
