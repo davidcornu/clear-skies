@@ -4,7 +4,7 @@ A simple weather API backed by Environment Canada's [Current Condition & Forecas
 
 ⚠️ Clear Skies is a hobby project. Expect ongoing development and maintenance to be very much correlated to how much value it brings me as a learning resource and as a data source for my other projects.
 
-You are welcome to use the instance hosted on [clear-skies.ca](https://clear-skies-ca) (thanks to Fly.io's free tier) with the understanding that it comes with no uptime guarantees. Please host your own instance if you need something more robust.
+You are welcome to use the instance hosted on [clear-skies.ca](https://clear-skies.ca) (thanks to Fly.io's free tier) with the understanding that it comes with no uptime guarantees. Please host your own instance if you need something more robust.
 
 ## Getting started
 
