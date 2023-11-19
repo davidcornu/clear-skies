@@ -18,6 +18,7 @@ fn temperature_trend(input: &str) -> IResult<&str, TemperatureTrend> {
         map(tag("Low"), |_| TemperatureTrend::Low),
         map(tag("Temperature steady near"), |_| TemperatureTrend::Steady),
         map(tag("Temperature falling to"), |_| TemperatureTrend::Low),
+        map(tag("Temperature rising to"), |_| TemperatureTrend::High),
     ))(input)
 }
 
@@ -83,8 +84,8 @@ pub fn parse(input: &str) -> Result<(&str, Parsed), NomError<String>> {
             probability_of_precipitation: pop,
         },
     )(input)
-    .map_err(|e| e.to_owned())
-    .finish()
+        .map_err(|e| e.to_owned())
+        .finish()
 }
 
 #[cfg(test)]
@@ -115,9 +116,9 @@ mod tests {
                     condition: "Chance of showers".to_string(),
                     temperature: Temperature {
                         trend: TemperatureTrend::High,
-                        degrees_c: 19.0
+                        degrees_c: 19.0,
                     },
-                    probability_of_precipitation: Some(60)
+                    probability_of_precipitation: Some(60),
                 }
             ))
         );
@@ -132,11 +133,28 @@ mod tests {
                     condition: "Clear".to_string(),
                     temperature: Temperature {
                         trend: TemperatureTrend::Low,
-                        degrees_c: 1.0
+                        degrees_c: 1.0,
                     },
-                    probability_of_precipitation: None
+                    probability_of_precipitation: None,
                 }
             ))
-        )
+        );
+
+        assert_eq!(
+            parse("Monday night: Periods of rain. Temperature rising to 7 by morning."),
+            Ok((
+                "",
+                Parsed {
+                    weekday: Weekday::Mon,
+                    is_night: true,
+                    condition: "Periods of rain".to_string(),
+                    temperature: Temperature {
+                        degrees_c: 7.0,
+                        trend: TemperatureTrend::High
+                    },
+                    probability_of_precipitation: None,
+                }
+            ))
+        );
     }
 }
