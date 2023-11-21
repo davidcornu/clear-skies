@@ -16,7 +16,7 @@ pub fn cache() -> &'static HashMap<&'static str, LonLat> {
 }
 
 impl Geocoder {
-    const BASE_URL: &str = "https://api.mapbox.com/geocoding/v5";
+    const BASE_URL: &'static str = "https://api.mapbox.com/geocoding/v5";
 
     pub fn new<S: ToString>(mapbox_access_token: S) -> Self {
         Self {

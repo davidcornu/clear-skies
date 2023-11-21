@@ -39,7 +39,7 @@ impl Default for ClientOptions {
 }
 
 impl Client {
-    const USER_AGENT: &str = concat!(
+    const USER_AGENT: &'static str = concat!(
         "weather-sync v",
         env!("CARGO_PKG_VERSION"),
         " (",
