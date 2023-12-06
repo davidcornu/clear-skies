@@ -72,7 +72,7 @@
           inherit cargoArtifacts;
         });
 
-        packages.container = pkgs.dockerTools.buildLayeredImage {
+        packages.container = pkgs.dockerTools.streamLayeredImage {
           name = "weather-server";
           tag = "latest";
           contents = [ pkgs.cacert packages.default ];
