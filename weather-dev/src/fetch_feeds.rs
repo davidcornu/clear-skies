@@ -18,10 +18,6 @@ pub async fn run(cache_dir: &Path) -> Result<()> {
     let base_url = Url::parse(BASE_URL).expect("always valid");
     let rss_base_url = Url::parse(RSS_BASE_URL).expect("always valid");
 
-    let mut test_feeds_path = cache_dir.to_owned();
-    test_feeds_path.push("test_feeds");
-    std::fs::create_dir_all(test_feeds_path)?;
-
     for id in PROVINCE_AND_TERRITORY_CODES {
         let mut url = base_url.clone();
         url.query_pairs_mut().append_pair("id", id);
@@ -51,7 +47,6 @@ pub async fn run(cache_dir: &Path) -> Result<()> {
                 .expect("always valid");
 
             let mut path = cache_dir.to_owned();
-            path.push("test_feeds");
             path.push(format!("{code}.xml"));
 
             eprintln!("fetching {rss_url}");
