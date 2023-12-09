@@ -26,16 +26,26 @@ struct Cli {
     cache_dir: PathBuf,
 }
 
+impl Cli {
+    fn absolute_cache_dir(&self) -> Result<PathBuf> {
+        let cwd = std::env::current_dir()?;
+        Ok(cwd.join(&self.cache_dir).canonicalize()?)
+    }
+}
+
 fn main() -> Result<()> {
     color_eyre::install()?;
 
     let cli = Cli::parse();
+    let cache_dir = cli.absolute_cache_dir()?;
+
+    eprintln!("{}", cache_dir.display());
 
     match cli.command {
-        Command::CacheFeeds => fetch_feeds::run(&cli.cache_dir)?,
+        Command::CacheFeeds => fetch_feeds::run(&cache_dir)?,
         Command::BuildMapping {
             mapbox_access_token,
-        } => build_mapping::run(&cli.cache_dir, mapbox_access_token.as_deref())?,
+        } => build_mapping::run(&cache_dir, mapbox_access_token.as_deref())?,
     }
 
     Ok(())
