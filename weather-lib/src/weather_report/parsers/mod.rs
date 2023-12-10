@@ -186,4 +186,24 @@ mod tests {
             ))
         )
     }
+
+    #[test]
+    fn test_special_weather_statement_summary() {
+        assert_eq!(
+            special_weather_statement_summary("Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions. Issued: 12:00 noon EST Saturday 9 December 2023"),
+            Ok((
+               "",
+               (
+                   "Persons in or near this area should be on the lookout for adverse weather conditions and take necessary safety precautions.",
+                    LocalDateTime {
+                        ts: FixedOffset::west_opt(5 * 3600)
+                            .unwrap()
+                            .with_ymd_and_hms(2023, 12, 9, 12, 0, 0)
+                            .unwrap(),
+                        tz: CanadaTz::Eastern
+                    }
+               )
+            ))
+        );
+    }
 }

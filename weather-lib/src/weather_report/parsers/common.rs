@@ -73,6 +73,7 @@ fn am_pm(input: &str) -> IResult<&str, PeriodOfDay> {
         map(tag("a.m."), |_| PeriodOfDay::AM),
         map(tag("PM"), |_| PeriodOfDay::PM),
         map(tag("p.m."), |_| PeriodOfDay::PM),
+        map(tag("noon"), |_| PeriodOfDay::PM),
     ))(input)
 }
 
