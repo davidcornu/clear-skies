@@ -120,6 +120,7 @@ fn conditions(input: &str) -> IResult<&str, Vec<Condition>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use color_eyre::eyre::eyre;
 
     #[test]
     fn test_conditions() {
@@ -206,7 +207,19 @@ mod tests {
 
         let mappings = cases
             .iter()
-            .map(|input| conditions(input).map(|(_, parsed)| (input, parsed)))
+            .map(|input| {
+                conditions(input)
+                    .map_err(Into::into)
+                    .and_then(|(remainder, parsed)| {
+                        if remainder.is_empty() {
+                            Ok((input, parsed))
+                        } else {
+                            Err(eyre!(
+                                "Expected parser to consume all of {input:?} but got {remainder:?}"
+                            ))
+                        }
+                    })
+            })
             .collect::<Result<Vec<_>, _>>()
             .unwrap();
 
