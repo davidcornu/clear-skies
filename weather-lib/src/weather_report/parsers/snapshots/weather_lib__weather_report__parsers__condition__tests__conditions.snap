@@ -1,0 +1,503 @@
+---
+source: weather-lib/src/weather_report/parsers/condition.rs
+expression: mappings
+---
+[
+    (
+        "A few clouds",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "A few flurries",
+        [
+            Flurries,
+        ],
+    ),
+    (
+        "A mix of sun and cloud",
+        [
+            Sunny,
+            Cloudy,
+        ],
+    ),
+    (
+        "Blizzard",
+        [
+            Blizzard,
+        ],
+    ),
+    (
+        "Blowing snow",
+        [
+            BlowingSnow,
+        ],
+    ),
+    (
+        "Chance of drizzle",
+        [
+            Drizzle,
+        ],
+    ),
+    (
+        "Chance of flurries",
+        [
+            Flurries,
+        ],
+    ),
+    (
+        "Chance of flurries or rain showers",
+        [
+            Flurries,
+            Rain,
+        ],
+    ),
+    (
+        "Chance of light snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Chance of rain",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Chance of rain showers or flurries",
+        [
+            Rain,
+            Flurries,
+        ],
+    ),
+    (
+        "Chance of rain showers or wet flurries",
+        [
+            Rain,
+            Flurries,
+        ],
+    ),
+    (
+        "Chance of showers",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Chance of showers or drizzle",
+        [
+            Rain,
+            Drizzle,
+        ],
+    ),
+    (
+        "Chance of snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Chance of snow sqalls",
+        [
+            SnowSqualls,
+        ],
+    ),
+    (
+        "Clear",
+        [
+            Clear,
+        ],
+    ),
+    (
+        "Clearing",
+        [
+            Clear,
+        ],
+    ),
+    (
+        "Cloudy",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "Cloudy periods",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "Drifting Snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Drizzle",
+        [
+            Drizzle,
+        ],
+    ),
+    (
+        "Drizzle mixed with freezing drizzle",
+        [
+            Drizzle,
+            FreezingDrizzle,
+        ],
+    ),
+    (
+        "Flurries",
+        [
+            Flurries,
+        ],
+    ),
+    (
+        "Flurries or rain showers",
+        [
+            Flurries,
+            Rain,
+        ],
+    ),
+    (
+        "Fog",
+        [
+            Fog,
+        ],
+    ),
+    (
+        "Freezing Fog",
+        [
+            FreezingFog,
+        ],
+    ),
+    (
+        "Freezing rain or rain",
+        [
+            FreezingRain,
+            Rain,
+        ],
+    ),
+    (
+        "Freezing rain or snow",
+        [
+            FreezingRain,
+            Snow,
+        ],
+    ),
+    (
+        "Haze",
+        [
+            Haze,
+        ],
+    ),
+    (
+        "Ice Crystals",
+        [
+            IceCrystals,
+        ],
+    ),
+    (
+        "Increasing cloudiness",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "Light Drizzle",
+        [
+            Drizzle,
+        ],
+    ),
+    (
+        "Light Rain",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Light Rain and Fog",
+        [
+            Rain,
+            Fog,
+        ],
+    ),
+    (
+        "Light Rainshower",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Light Snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Light Snowshower",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Light snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Mainly Clear",
+        [
+            Clear,
+        ],
+    ),
+    (
+        "Mainly Sunny",
+        [
+            Sunny,
+        ],
+    ),
+    (
+        "Mainly cloudy",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "Mainly sunny",
+        [
+            Sunny,
+        ],
+    ),
+    (
+        "Mist",
+        [
+            Mist,
+        ],
+    ),
+    (
+        "Mostly Cloudy",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "Overcast",
+        [
+            Overcast,
+        ],
+    ),
+    (
+        "Partly Cloudy",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "Partly cloudy",
+        [
+            Cloudy,
+        ],
+    ),
+    (
+        "Periods of drizzle",
+        [
+            Drizzle,
+        ],
+    ),
+    (
+        "Periods of drizzle or rain",
+        [
+            Drizzle,
+            Rain,
+        ],
+    ),
+    (
+        "Periods of light snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Periods of light snow mixed with freezing drizzle",
+        [
+            Snow,
+            FreezingDrizzle,
+        ],
+    ),
+    (
+        "Periods of rain",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Periods of rain mixed with snow",
+        [
+            Rain,
+            Snow,
+        ],
+    ),
+    (
+        "Periods of rain or drizzle",
+        [
+            Rain,
+            Drizzle,
+        ],
+    ),
+    (
+        "Periods of rain or freezing rain",
+        [
+            Rain,
+            FreezingRain,
+        ],
+    ),
+    (
+        "Periods of rain or snow",
+        [
+            Rain,
+            Snow,
+        ],
+    ),
+    (
+        "Periods of snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Periods of snow and blowing snow",
+        [
+            Snow,
+            BlowingSnow,
+        ],
+    ),
+    (
+        "Periods of snow or rain",
+        [
+            Snow,
+            Rain,
+        ],
+    ),
+    (
+        "Periods of wet snow mixed with rain",
+        [
+            Snow,
+            Rain,
+        ],
+    ),
+    (
+        "Rain",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Rain at times heavy",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Rain mixed with snow",
+        [
+            Rain,
+            Snow,
+        ],
+    ),
+    (
+        "Rain or drizzle",
+        [
+            Rain,
+            Drizzle,
+        ],
+    ),
+    (
+        "Rain or snow",
+        [
+            Rain,
+            Snow,
+        ],
+    ),
+    (
+        "Rain showers or flurries",
+        [
+            Rain,
+            Flurries,
+        ],
+    ),
+    (
+        "Showers",
+        [
+            Rain,
+        ],
+    ),
+    (
+        "Showers or drizzle",
+        [
+            Rain,
+            Drizzle,
+        ],
+    ),
+    (
+        "Snow",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Snow and blowing snow",
+        [
+            Snow,
+            BlowingSnow,
+        ],
+    ),
+    (
+        "Snow at times heavy",
+        [
+            Snow,
+        ],
+    ),
+    (
+        "Snow mixed with ice pellets",
+        [
+            Snow,
+            IcePellets,
+        ],
+    ),
+    (
+        "Snow mixed with rain",
+        [
+            Snow,
+            Rain,
+        ],
+    ),
+    (
+        "Snow or rain",
+        [
+            Snow,
+            Rain,
+        ],
+    ),
+    (
+        "Snow squalls",
+        [
+            SnowSqualls,
+        ],
+    ),
+    (
+        "Sunny",
+        [
+            Sunny,
+        ],
+    ),
+    (
+        "Wet snow mixed with rain",
+        [
+            Snow,
+            Rain,
+        ],
+    ),
+]

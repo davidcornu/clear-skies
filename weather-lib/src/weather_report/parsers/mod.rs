@@ -2,6 +2,7 @@ mod common;
 pub mod pressure;
 pub mod title;
 pub mod wind;
+pub mod condition;
 
 use nom::{
     branch::alt,
