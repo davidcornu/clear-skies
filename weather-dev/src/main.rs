@@ -1,6 +1,7 @@
 mod build_mapping;
 mod fetch_feeds;
 mod geocode;
+mod extract_conditions;
 
 use clap::{Parser, Subcommand};
 use color_eyre::eyre::Result;
@@ -15,6 +16,8 @@ enum Command {
         #[arg(long, env = "MAPBOX_ACCESS_TOKEN")]
         mapbox_access_token: Option<String>,
     },
+    /// Use the cached feeds to print out all the weather conditions
+    ExtractConditions
 }
 
 #[derive(Parser)]
@@ -46,6 +49,9 @@ fn main() -> Result<()> {
         Command::BuildMapping {
             mapbox_access_token,
         } => build_mapping::run(&cache_dir, mapbox_access_token.as_deref())?,
+        Command::ExtractConditions => {
+            extract_conditions::run(&cache_dir)?;
+        }
     }
 
     Ok(())
