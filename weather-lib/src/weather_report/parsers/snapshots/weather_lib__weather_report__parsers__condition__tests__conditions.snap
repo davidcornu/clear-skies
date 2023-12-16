@@ -10,9 +10,22 @@ expression: mappings
         ],
     ),
     (
+        "A few flurries or rain showers",
+        [
+            Flurries,
+            Rain,
+        ],
+    ),
+    (
         "A few flurries",
         [
             Flurries,
+        ],
+    ),
+    (
+        "A few showers",
+        [
+            Rain,
         ],
     ),
     (
@@ -35,15 +48,16 @@ expression: mappings
         ],
     ),
     (
-        "Chance of drizzle",
+        "Chance of drizzle or rain",
         [
             Drizzle,
+            Rain,
         ],
     ),
     (
-        "Chance of flurries",
+        "Chance of drizzle",
         [
-            Flurries,
+            Drizzle,
         ],
     ),
     (
@@ -54,15 +68,15 @@ expression: mappings
         ],
     ),
     (
-        "Chance of light snow",
+        "Chance of flurries",
         [
-            Snow,
+            Flurries,
         ],
     ),
     (
-        "Chance of rain",
+        "Chance of light snow",
         [
-            Rain,
+            Snow,
         ],
     ),
     (
@@ -80,7 +94,7 @@ expression: mappings
         ],
     ),
     (
-        "Chance of showers",
+        "Chance of rain",
         [
             Rain,
         ],
@@ -93,15 +107,21 @@ expression: mappings
         ],
     ),
     (
-        "Chance of snow",
+        "Chance of showers",
         [
-            Snow,
+            Rain,
         ],
     ),
     (
         "Chance of snow sqalls",
         [
             SnowSqualls,
+        ],
+    ),
+    (
+        "Chance of snow",
+        [
+            Snow,
         ],
     ),
     (
@@ -117,13 +137,13 @@ expression: mappings
         ],
     ),
     (
-        "Cloudy",
+        "Cloudy periods",
         [
             Cloudy,
         ],
     ),
     (
-        "Cloudy periods",
+        "Cloudy",
         [
             Cloudy,
         ],
@@ -135,16 +155,23 @@ expression: mappings
         ],
     ),
     (
+        "Drizzle mixed with freezing drizzle",
+        [
+            Drizzle,
+            FreezingDrizzle,
+        ],
+    ),
+    (
         "Drizzle",
         [
             Drizzle,
         ],
     ),
     (
-        "Drizzle mixed with freezing drizzle",
+        "Flurries or rain showers",
         [
-            Drizzle,
-            FreezingDrizzle,
+            Flurries,
+            Rain,
         ],
     ),
     (
@@ -154,10 +181,9 @@ expression: mappings
         ],
     ),
     (
-        "Flurries or rain showers",
+        "Fog Patches",
         [
-            Flurries,
-            Rain,
+            Fog,
         ],
     ),
     (
@@ -193,6 +219,12 @@ expression: mappings
         ],
     ),
     (
+        "Heavy Snow",
+        [
+            Snow,
+        ],
+    ),
+    (
         "Ice Crystals",
         [
             IceCrystals,
@@ -211,9 +243,9 @@ expression: mappings
         ],
     ),
     (
-        "Light Rain",
+        "Light Freezing Drizzle",
         [
-            Rain,
+            FreezingDrizzle,
         ],
     ),
     (
@@ -224,9 +256,35 @@ expression: mappings
         ],
     ),
     (
+        "Light Rain",
+        [
+            Rain,
+        ],
+    ),
+    (
         "Light Rainshower",
         [
             Rain,
+        ],
+    ),
+    (
+        "Light Snow and Blowing Snow",
+        [
+            Snow,
+            BlowingSnow,
+        ],
+    ),
+    (
+        "Light snow mixed with rain",
+        [
+            Snow,
+            Rain,
+        ],
+    ),
+    (
+        "Light snow",
+        [
+            Snow,
         ],
     ),
     (
@@ -242,21 +300,9 @@ expression: mappings
         ],
     ),
     (
-        "Light snow",
-        [
-            Snow,
-        ],
-    ),
-    (
         "Mainly Clear",
         [
             Clear,
-        ],
-    ),
-    (
-        "Mainly Sunny",
-        [
-            Sunny,
         ],
     ),
     (
@@ -267,6 +313,12 @@ expression: mappings
     ),
     (
         "Mainly sunny",
+        [
+            Sunny,
+        ],
+    ),
+    (
+        "Mainly Sunny",
         [
             Sunny,
         ],
@@ -290,21 +342,15 @@ expression: mappings
         ],
     ),
     (
-        "Partly Cloudy",
-        [
-            Cloudy,
-        ],
-    ),
-    (
         "Partly cloudy",
         [
             Cloudy,
         ],
     ),
     (
-        "Periods of drizzle",
+        "Partly Cloudy",
         [
-            Drizzle,
+            Cloudy,
         ],
     ),
     (
@@ -315,9 +361,9 @@ expression: mappings
         ],
     ),
     (
-        "Periods of light snow",
+        "Periods of drizzle",
         [
-            Snow,
+            Drizzle,
         ],
     ),
     (
@@ -328,9 +374,9 @@ expression: mappings
         ],
     ),
     (
-        "Periods of rain",
+        "Periods of light snow",
         [
-            Rain,
+            Snow,
         ],
     ),
     (
@@ -362,9 +408,9 @@ expression: mappings
         ],
     ),
     (
-        "Periods of snow",
+        "Periods of rain",
         [
-            Snow,
+            Rain,
         ],
     ),
     (
@@ -375,6 +421,13 @@ expression: mappings
         ],
     ),
     (
+        "Periods of snow mixed with rain",
+        [
+            Snow,
+            Rain,
+        ],
+    ),
+    (
         "Periods of snow or rain",
         [
             Snow,
@@ -382,15 +435,15 @@ expression: mappings
         ],
     ),
     (
-        "Periods of wet snow mixed with rain",
+        "Periods of snow",
         [
             Snow,
-            Rain,
         ],
     ),
     (
-        "Rain",
+        "Periods of wet snow mixed with rain",
         [
+            Snow,
             Rain,
         ],
     ),
@@ -429,7 +482,7 @@ expression: mappings
         ],
     ),
     (
-        "Showers",
+        "Rain",
         [
             Rain,
         ],
@@ -442,9 +495,9 @@ expression: mappings
         ],
     ),
     (
-        "Snow",
+        "Showers",
         [
-            Snow,
+            Rain,
         ],
     ),
     (
@@ -455,16 +508,10 @@ expression: mappings
         ],
     ),
     (
-        "Snow at times heavy",
+        "Snow and Blowing Snow",
         [
             Snow,
-        ],
-    ),
-    (
-        "Snow mixed with ice pellets",
-        [
-            Snow,
-            IcePellets,
+            BlowingSnow,
         ],
     ),
     (
@@ -488,16 +535,15 @@ expression: mappings
         ],
     ),
     (
-        "Sunny",
+        "Snow",
         [
-            Sunny,
+            Snow,
         ],
     ),
     (
-        "Wet snow mixed with rain",
+        "Sunny",
         [
-            Snow,
-            Rain,
+            Sunny,
         ],
     ),
 ]
