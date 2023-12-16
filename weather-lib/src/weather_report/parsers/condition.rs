@@ -3,7 +3,7 @@ use nom::{
     bytes::complete::{tag, tag_no_case},
     combinator::{map, opt},
     multi::separated_list1,
-    sequence::{preceded, terminated, tuple},
+    sequence::{delimited, preceded, terminated, tuple},
     IResult,
 };
 
@@ -38,7 +38,7 @@ fn conditions(input: &str) -> IResult<&str, Vec<Condition>> {
             tag_no_case(" or "),
             tag_no_case(" mixed with "),
         )),
-        preceded(
+        delimited(
             tuple((
                 opt(terminated(
                     alt((
@@ -64,7 +64,10 @@ fn conditions(input: &str) -> IResult<&str, Vec<Condition>> {
             )),
             alt((
                 map(tag_no_case("blizzard"), |_| Condition::Blizzard),
-                map(tag_no_case("clear"), |_| Condition::Clear),
+                map(
+                    terminated(tag_no_case("clear"), opt(tag_no_case("ing"))),
+                    |_| Condition::Clear,
+                ),
                 map(
                     terminated(
                         tag_no_case("cloud"),
@@ -106,13 +109,20 @@ fn conditions(input: &str) -> IResult<&str, Vec<Condition>> {
                     ),
                     |_| Condition::SnowSqualls,
                 ),
-                map(tag_no_case("snow"), |_| Condition::Snow),
+                map(
+                    terminated(tag_no_case("snow"), opt(tag_no_case("shower"))),
+                    |_| Condition::Snow,
+                ),
                 map(tag_no_case("blowing snow"), |_| Condition::BlowingSnow),
                 map(
                     terminated(tag_no_case("sun"), opt(tag_no_case("ny"))),
                     |_| Condition::Sunny,
                 ),
             )),
+            opt(alt((
+                tag_no_case(" periods"),
+                tag_no_case(" at times heavy"),
+            ))),
         ),
     )(input)
 }
