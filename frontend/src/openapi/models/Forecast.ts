@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Condition } from './Condition';
 import type { LocalDateTime } from './LocalDateTime';
 import type { Temperature } from './Temperature';
 
@@ -15,6 +16,10 @@ export type Forecast = {
      * When the forecast was issued
      */
     issued_at: LocalDateTime;
+    /**
+     * Best-effort attempt to convert the provided conditions into something that can be used to show an icon.
+     */
+    normalized_condition?: Array<Condition> | null;
     /**
      * The [probability of precipitation](https://www.canada.ca/en/environment-climate-change/services/sky-watchers/glossary.html#wsDTE9CAF366) as a percentage
      */

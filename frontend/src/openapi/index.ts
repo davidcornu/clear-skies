@@ -12,6 +12,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { CanadaTz } from './models/CanadaTz';
 export type { CardinalDirection } from './models/CardinalDirection';
+export type { Condition } from './models/Condition';
 export type { Coordinates } from './models/Coordinates';
 export type { CurrentConditions } from './models/CurrentConditions';
 export type { DailyForecast } from './models/DailyForecast';

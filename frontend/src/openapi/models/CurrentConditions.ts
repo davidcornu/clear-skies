@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Condition } from './Condition';
 import type { ObservedAt } from './ObservedAt';
 import type { Pressure } from './Pressure';
 import type { Wind } from './Wind';
@@ -31,6 +32,10 @@ export type CurrentConditions = {
      * [Relative humidity](https://climate.weather.gc.ca/glossary_e.html#r_humidity) as a percentage
      */
     humidity_pct?: number | null;
+    /**
+     * Best-effort attempt to convert the provided conditions into something that can be used to show an icon.
+     */
+    normalized_condition?: Array<Condition> | null;
     /**
      * Time and place where conditions were observed
      */
