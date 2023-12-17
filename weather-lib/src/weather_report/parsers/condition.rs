@@ -1,6 +1,7 @@
 use nom::{
     branch::alt,
-    bytes::complete::{tag, tag_no_case},
+    bytes::complete::tag_no_case,
+    character::complete::char,
     combinator::{map, opt},
     error::Error as NomError,
     multi::separated_list1,
@@ -34,11 +35,11 @@ pub enum Condition {
 
 pub fn conditions(input: &str) -> Result<(&str, Vec<Condition>), NomError<String>> {
     separated_list1(
-        delimited(tag(" "), conjunction, tag(" ")),
+        delimited(char(' '), conjunction, char(' ')),
         delimited(
             tuple((
-                opt(terminated(prefix_frequency, tag(" "))),
-                opt(terminated(qualifier, tag(" "))),
+                opt(terminated(prefix_frequency, char(' '))),
+                opt(terminated(qualifier, char(' '))),
             )),
             alt((
                 map(tag_no_case("blizzard"), |_| Condition::Blizzard),
@@ -97,7 +98,7 @@ pub fn conditions(input: &str) -> Result<(&str, Vec<Condition>), NomError<String
                     |_| Condition::Sunny,
                 ),
             )),
-            opt(preceded(tag(" "), suffix_frequency)),
+            opt(preceded(char(' '), suffix_frequency)),
         ),
     )(input)
     .map_err(|e| e.to_owned())
