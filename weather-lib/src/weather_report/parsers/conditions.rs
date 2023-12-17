@@ -30,7 +30,6 @@ pub enum Condition {
     Snow,
     SnowSqualls,
     Sunny,
-    Other(String),
 }
 
 pub fn conditions(input: &str) -> Result<(&str, Vec<Condition>), NomError<String>> {
