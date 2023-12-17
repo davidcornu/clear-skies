@@ -6,6 +6,7 @@ use serde::Serialize;
 
 use crate::environment_canada::weather_feed::Entry;
 
+use super::parsers::conditions::Condition;
 use super::{parsers, LocalDateTime};
 
 /// Current weather conditions
@@ -29,6 +30,8 @@ pub struct CurrentConditions {
     pub visibility_km: Option<f32>,
     /// Description of current conditions (e.g. "Light Rainshower")
     pub condition: Option<String>,
+    /// Best-effort attempt to convert the provided conditions into something that can be used to show an icon.
+    pub normalized_condition: Option<Vec<Condition>>,
     /// [Humidex](https://climate.weather.gc.ca/glossary_e.html#humidex) in degrees Celsius
     pub humidex_c: Option<f32>,
     /// [Wind chill](https://climate.weather.gc.ca/glossary_e.html#windChill) in degrees Celsius
@@ -49,7 +52,11 @@ impl CurrentConditions {
                 .trim_end_matches(':')
                 .to_string();
 
-            let Some(value) = b.next_sibling().and_then(|e| e.value().as_text()).map(|v| v.trim_start()) else {
+            let Some(value) = b
+                .next_sibling()
+                .and_then(|e| e.value().as_text())
+                .map(|v| v.trim_start())
+            else {
                 continue;
             };
 
@@ -172,6 +179,7 @@ struct Builder {
     aqhi: Option<u8>,
     visibility_km: Option<f32>,
     condition: Option<String>,
+    normalized_condition: Option<Vec<Condition>>,
     humidex_c: Option<f32>,
     wind_chill_c: Option<f32>,
 }
@@ -190,6 +198,7 @@ impl Builder {
             aqhi: self.aqhi,
             visibility_km: self.visibility_km,
             condition: self.condition,
+            normalized_condition: self.normalized_condition,
             humidex_c: self.humidex_c,
             wind_chill_c: self.wind_chill_c,
         })
@@ -245,6 +254,11 @@ impl Builder {
 
     fn set_condition(&mut self, value: &str) -> Result<()> {
         self.condition.replace(value.to_string());
+
+        if let Ok((_, normalized_condition)) = parsers::conditions::parse(value) {
+            self.normalized_condition.replace(normalized_condition);
+        }
+
         Ok(())
     }
 
