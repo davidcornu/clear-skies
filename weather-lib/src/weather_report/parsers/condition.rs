@@ -2,13 +2,14 @@ use nom::{
     branch::alt,
     bytes::complete::{tag, tag_no_case},
     combinator::{map, opt},
+    error::Error as NomError,
     multi::separated_list1,
     sequence::{delimited, preceded, terminated, tuple},
-    IResult,
+    Finish, IResult,
 };
 
 #[derive(Debug)]
-enum Condition {
+pub enum Condition {
     Blizzard,
     Clear,
     Cloudy,
@@ -31,37 +32,13 @@ enum Condition {
     Other(String),
 }
 
-fn conditions(input: &str) -> IResult<&str, Vec<Condition>> {
+pub fn conditions(input: &str) -> Result<(&str, Vec<Condition>), NomError<String>> {
     separated_list1(
-        alt((
-            tag_no_case(" and "),
-            tag_no_case(" or "),
-            tag_no_case(" mixed with "),
-        )),
+        conjunction,
         delimited(
             tuple((
-                opt(terminated(
-                    alt((
-                        tag_no_case("a few"),
-                        tag_no_case("chance of"),
-                        tag_no_case("mainly"),
-                        tag_no_case("mostly"),
-                        tag_no_case("partly"),
-                        tag_no_case("periods of"),
-                        tag_no_case("increasing"),
-                        tag_no_case("a mix of"),
-                    )),
-                    tag(" "),
-                )),
-                opt(terminated(
-                    alt((
-                        tag_no_case("light"),
-                        tag_no_case("heavy"),
-                        tag_no_case("wet"),
-                        tag_no_case("drifting"),
-                    )),
-                    tag(" "),
-                )),
+                opt(terminated(prefix_frequency, tag(" "))),
+                opt(terminated(qualifier, tag(" "))),
             )),
             alt((
                 map(tag_no_case("blizzard"), |_| Condition::Blizzard),
@@ -120,13 +97,49 @@ fn conditions(input: &str) -> IResult<&str, Vec<Condition>> {
                     |_| Condition::Sunny,
                 ),
             )),
-            opt(alt((
-                tag_no_case(" periods"),
-                tag_no_case(" at times heavy"),
-                tag_no_case(" patches"),
-            ))),
+            opt(preceded(tag(" "), suffix_frequency)),
         ),
     )(input)
+    .map_err(|e| e.to_owned())
+    .finish()
+}
+
+fn conjunction(input: &str) -> IResult<&str, &str> {
+    alt((
+        tag_no_case(" and "),
+        tag_no_case(" or "),
+        tag_no_case(" mixed with "),
+    ))(input)
+}
+
+fn prefix_frequency(input: &str) -> IResult<&str, &str> {
+    alt((
+        tag_no_case("a few"),
+        tag_no_case("chance of"),
+        tag_no_case("mainly"),
+        tag_no_case("mostly"),
+        tag_no_case("partly"),
+        tag_no_case("periods of"),
+        tag_no_case("increasing"),
+        tag_no_case("a mix of"),
+    ))(input)
+}
+
+fn suffix_frequency(input: &str) -> IResult<&str, &str> {
+    alt((
+        tag_no_case("periods"),
+        tag_no_case("at times heavy"),
+        tag_no_case("patches"),
+    ))(input)
+}
+
+fn qualifier(input: &str) -> IResult<&str, &str> {
+    alt((
+        tag_no_case("light"),
+        tag_no_case("heavy"),
+        tag_no_case("wet"),
+        tag_no_case("drifting"),
+    ))(input)
 }
 
 #[cfg(test)]
@@ -136,6 +149,7 @@ mod tests {
 
     #[test]
     fn test_conditions() {
+        // Obtained by running `weather-dev`'s `cache-feeds` and `extract-conditions` commands
         let cases = [
             "A few clouds",
             "A few flurries or rain showers",
