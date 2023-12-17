@@ -34,7 +34,7 @@ pub enum Condition {
 
 pub fn conditions(input: &str) -> Result<(&str, Vec<Condition>), NomError<String>> {
     separated_list1(
-        conjunction,
+        delimited(tag(" "), conjunction, tag(" ")),
         delimited(
             tuple((
                 opt(terminated(prefix_frequency, tag(" "))),
@@ -106,9 +106,9 @@ pub fn conditions(input: &str) -> Result<(&str, Vec<Condition>), NomError<String
 
 fn conjunction(input: &str) -> IResult<&str, &str> {
     alt((
-        tag_no_case(" and "),
-        tag_no_case(" or "),
-        tag_no_case(" mixed with "),
+        tag_no_case("and"),
+        tag_no_case("or"),
+        tag_no_case("mixed with"),
     ))(input)
 }
 
