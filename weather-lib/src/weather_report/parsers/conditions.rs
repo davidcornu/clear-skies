@@ -32,7 +32,7 @@ pub enum Condition {
     Sunny,
 }
 
-pub fn conditions(input: &str) -> Result<(&str, Vec<Condition>), NomError<String>> {
+pub fn parse(input: &str) -> Result<(&str, Vec<Condition>), NomError<String>> {
     separated_list1(
         delimited(char(' '), conjunction, char(' ')),
         delimited(
@@ -241,7 +241,7 @@ mod tests {
         let mappings = cases
             .iter()
             .map(|input| {
-                conditions(input)
+                parse(input)
                     .map_err(Into::into)
                     .and_then(|(remainder, parsed)| {
                         if remainder.is_empty() {
