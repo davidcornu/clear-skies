@@ -21,6 +21,8 @@ jobs:
       - run: |
           nix build .#container
           ./result | docker load
+      - run: |
+          nix run nixpkgs#dive -- --ci "weather-server:latest"
       - run: flyctl deploy --local-only --image "weather-server:latest"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
