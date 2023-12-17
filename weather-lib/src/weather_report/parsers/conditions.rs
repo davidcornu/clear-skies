@@ -8,8 +8,10 @@ use nom::{
     sequence::{delimited, preceded, terminated, tuple},
     Finish, IResult,
 };
+use schemars::JsonSchema;
+use serde::Serialize;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 pub enum Condition {
     Blizzard,
     BlowingSnow,
