@@ -1,5 +1,5 @@
 ---
-source: weather-lib/src/weather_report/parsers/condition.rs
+source: weather-lib/src/weather_report/parsers/conditions.rs
 expression: mappings
 ---
 [
