@@ -10,6 +10,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
   if (command == "build") {
     config.build = {
       outDir: "../weather-server/src/static/assets",
+      emptyOutDir: true,
       lib: {
         entry: "src/Try.svelte",
         name: "Try",
