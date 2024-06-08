@@ -219,7 +219,7 @@ function se(n, e) {
 function ft(n, e) {
   n.$$.dirty[0] === -1 && (ee.push(n), ut(), n.$$.dirty.fill(0)), n.$$.dirty[e / 31 | 0] |= 1 << e % 31;
 }
-function ke(n, e, t, r, o, s, i, u = [-1]) {
+function ke(n, e, t, r, o, s, i = null, u = [-1]) {
   const l = oe;
   F(n);
   const a = n.$$ = {
