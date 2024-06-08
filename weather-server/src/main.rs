@@ -5,9 +5,9 @@ use std::{net::SocketAddrV4, ops::Bound, path, sync::Arc};
 use clap::Parser;
 use color_eyre::eyre::{eyre, Result};
 use dropshot::{
-    endpoint, ApiDescription, ConfigDropshot, ConfigLogging, EmptyScanParams, HttpError,
-    HttpResponseOk, HttpServerStarter, PaginationParams, Path, Query, RequestContext, ResultsPage,
-    WhichPage,
+    endpoint, ApiDescription, ConfigDropshot, ConfigLogging, EmptyScanParams, HandlerTaskMode,
+    HttpError, HttpResponseOk, HttpServerStarter, PaginationParams, Path, Query, RequestContext,
+    ResultsPage, WhichPage,
 };
 use http::Response;
 use hyper::Body;
@@ -89,7 +89,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
     let server_config = ConfigDropshot {
         bind_address: bind_addr.into(),
         request_body_max_bytes: 1024,
-        tls: None,
+        default_handler_task_mode: HandlerTaskMode::Detached,
     };
 
     let server = HttpServerStarter::new(&server_config, api, state, &log)
@@ -145,7 +145,10 @@ async fn assets(
 
     // Sanitize the path parameter to make sure we only read
     let Some(file_name) = path_params.file_path.file_name() else {
-        return Err(HttpError::for_not_found(None, "malformed request".to_string()));
+        return Err(HttpError::for_not_found(
+            None,
+            "malformed request".to_string(),
+        ));
     };
 
     let base_path = path::Path::new("assets").join(file_name);
