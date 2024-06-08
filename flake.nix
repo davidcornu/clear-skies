@@ -85,7 +85,7 @@
 
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [ rustToolchain ] ++ systemBuildInputs;
-          buildInputs = with pkgs; [ nodejs yarn cargo-insta ];
+          buildInputs = with pkgs; [ nodejs yarn cargo-insta cargo-outdated ];
         };
       }
     );
