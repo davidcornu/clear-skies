@@ -602,9 +602,9 @@ dependencies = [
 
 [[package]]
 name = "deunicode"
-version = "1.4.1"
+version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a1abaf4d861455be59f64fd2b55606cb151fce304ede7165f410243ce96bde6"
+checksum = "339544cc9e2c4dc3fc7149fd630c5f22263a4fdf18a98afd0075784968b5cf00"
 
 [[package]]
 name = "digest"
@@ -1308,9 +1308,9 @@ dependencies = [
 
 [[package]]
 name = "indoc"
-version = "2.0.4"
+version = "2.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e186cfbae8084e513daff4240b4797e342f988cecda4fb6c939150f96315fd8"
+checksum = "b248f5224d1d606005e02c97f5aa4e88eeb230488bcc03bc9ca4d7991399f2b5"
 
 [[package]]
 name = "insta"
