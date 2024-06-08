@@ -70,7 +70,7 @@ impl Client {
         let time_before_request = SystemTime::now();
         let mut request = Request::new(Method::GET, feed_url);
 
-        let mut cached_entry = self.cache.get(&cache_key);
+        let mut cached_entry = self.cache.get(&cache_key).await;
 
         if let Some(entry) = &cached_entry {
             match entry
