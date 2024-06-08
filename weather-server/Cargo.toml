@@ -6,16 +6,20 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "4.4.8", features = ["derive", "env"] }
-color-eyre = "0.6.2"
+clap = { version = "4.5.6", features = ["derive", "env"] }
+color-eyre = "0.6.3"
 dropshot = "0.9.0"
 http = "0.2.11"
 hyper = "0.14.27"
-rust-embed = "8.0.0"
+rust-embed = "8.4.0"
 schemars = "0.8.16"
-serde = { version = "1.0.192", features = ["derive", "rc"] }
-serde_json = "1.0.108"
+serde = { version = "1.0.203", features = ["derive", "rc"] }
+serde_json = "1.0.117"
 tantivy = "0.20.2"
-tokio = { version = "1.34.0", default-features = false, features = ["macros", "rt-multi-thread", "rt"] }
+tokio = { version = "1.34.0", default-features = false, features = [
+    "macros",
+    "rt-multi-thread",
+    "rt",
+] }
 weather-lib = { path = "../weather-lib" }
 weather-sync = { path = "../weather-sync" }

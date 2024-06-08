@@ -7,12 +7,21 @@ homepage = "https://github.com/davidcornu/weather"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = { version = "0.4.31", default-features = false, features = ["std", "clock", "serde"] }
-color-eyre = "0.6.2"
+chrono = { version = "0.4.38", default-features = false, features = [
+    "std",
+    "clock",
+    "serde",
+] }
+color-eyre = "0.6.3"
 http = "0.2.9"
-http-cache-semantics = { version = "1.0.2", default-features = false, features = ["reqwest"] }
+http-cache-semantics = { version = "1.0.2", default-features = false, features = [
+    "reqwest",
+] }
 moka = { version = "0.11.3", features = ["future"] }
 nom = "7.1.3"
-reqwest = { version = "0.11.22", default-features = false, features = ["rustls-tls-native-roots", "gzip"] }
+reqwest = { version = "0.11.22", default-features = false, features = [
+    "rustls-tls-native-roots",
+    "gzip",
+] }
 tokio = { version = "1.34.0", default-features = false, features = ["sync"] }
 weather-lib = { path = "../weather-lib" }
