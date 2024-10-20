@@ -46,7 +46,9 @@ pub struct Entry {
     pub links: Vec<Link>,
     pub category: Category,
     pub updated: String,
-    pub published: String,
+    // Environment Canada recently started adding a "Notice"
+    // entry without a `<published>` tag.
+    pub published: Option<String>,
 }
 
 #[derive(Deserialize, Debug, Clone)]
