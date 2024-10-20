@@ -49,6 +49,9 @@ impl WeatherReport {
                             .push(SpecialWeatherStatement::from_entry(&entry)?);
                     }
                 }
+                "Notice" => {
+                    // Ignore these entries
+                }
                 term => {
                     return Err(eyre!("feed contains entry with unknown category: {term:?}"));
                 }
