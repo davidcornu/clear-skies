@@ -13,13 +13,13 @@ chrono = { version = "0.4.38", default-features = false, features = [
     "serde",
 ] }
 color-eyre = "0.6.3"
-http = "0.2.9"
-http-cache-semantics = { version = "1.0.2", default-features = false, features = [
+http = "1.1.0"
+http-cache-semantics = { version = "2.1.0", default-features = false, features = [
     "reqwest",
 ] }
 moka = { version = "0.12.7", features = ["future"] }
 nom = "7.1.3"
-reqwest = { version = "0.11.22", default-features = false, features = [
+reqwest = { version = "0.12.9", default-features = false, features = [
     "rustls-tls-native-roots",
     "gzip",
 ] }

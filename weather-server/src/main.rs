@@ -4,13 +4,13 @@ use std::{net::SocketAddrV4, ops::Bound, path, sync::Arc};
 
 use clap::Parser;
 use color_eyre::eyre::{eyre, Result};
+use dropshot::Body;
 use dropshot::{
     endpoint, ApiDescription, ConfigDropshot, ConfigLogging, EmptyScanParams, HandlerTaskMode,
     HttpError, HttpResponseOk, HttpServerStarter, PaginationParams, Path, Query, RequestContext,
     ResultsPage, WhichPage,
 };
 use http::Response;
-use hyper::Body;
 use location_search::LocationSearch;
 use rust_embed::RustEmbed;
 use schemars::JsonSchema;
@@ -90,6 +90,7 @@ async fn run_server(bind_addr: SocketAddrV4) -> Result<()> {
         bind_address: bind_addr.into(),
         request_body_max_bytes: 1024,
         default_handler_task_mode: HandlerTaskMode::Detached,
+        log_headers: vec![],
     };
 
     let server = HttpServerStarter::new(&server_config, api, state, &log)
@@ -109,7 +110,7 @@ fn static_response(file_path: &str) -> Result<Response<Body>, HttpError> {
     let file = StaticAsset::get(file_path)
         .ok_or_else(|| HttpError::for_not_found(None, format!("failed to load {file_path:?}")))?;
 
-    let content_type = match std::path::Path::new(file_path)
+    let content_type = match path::Path::new(file_path)
         .extension()
         .and_then(|e| e.to_str())
     {
@@ -121,7 +122,7 @@ fn static_response(file_path: &str) -> Result<Response<Body>, HttpError> {
 
     let response = Response::builder()
         .header("Content-Type", content_type)
-        .body(Body::from(file.data))
+        .body(Body::from(file.data.into_owned()))
         .unwrap();
 
     Ok(response)

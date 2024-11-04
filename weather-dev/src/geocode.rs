@@ -63,6 +63,7 @@ pub struct GeocoderResponse {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Feature {
+    #[allow(unused)]
     pub place_name: String,
     pub center: LonLat,
 }
